@@ -4,6 +4,7 @@ from TF_IDF import QueryIdf
 from Search import SearchInDocs
 from Search import SearchInLines
 from Write import WriteAllDocsTFs
+from Compute import Tf_Idf
 import json
 
 
@@ -43,6 +44,10 @@ def Prompting():
             print()
 
 
+
+
+
 WriteAllDocsTFs()
+Tf_Idf.WriteDocsStats()
 
 Prompting()

@@ -1,11 +1,10 @@
 import json
 import numpy
 from Write import TfFormat
-from Text import Text
 import os
-import shutil
 import math
-import random
+
+from collections import Counter
 
 TfFormat = 'WordsTF/doc_{}.json'
 Tf_IdfFormat = 'WordsTF_IDF/doc_{}.json'
@@ -19,36 +18,30 @@ class Retrieval:
     
     def RetrieveUniqueWords(docNum):
         tmpList = Retrieval.RetrieveWordsTFs(docNum).keys()
-        return numpy.array(list(tmpList))
+        return list(tmpList)
     
     def RetrieveDocTFs(docNum):
         tmpList = Retrieval.RetrieveWordsTFs(docNum).values()
-        return numpy.array(list(tmpList))
+        return list(tmpList)
     
+
     
 
 
 class Tf_Idf:
 
+    def TermIdf(term, cDict):
+        c= 1
+        c+= cDict[term]
+        return math.log(50001 / c)
 
-    def TermIdf(term):
-        c=1
-        d=0
-        while d<25:
-            i = random.randint(0, 50000)
-            tmp = Retrieval.RetrieveWordsTFs(i)
-            if term in tmp:
-                c+=1
-            d+=1
-        return math.log(25 / c)
-
-    def WriteDocTfIdf(docNum):
-        tmpArr = Retrieval.RetrieveUniqueWords(docNum)
-        tmpArr2 = Retrieval.RetrieveDocTFs(docNum)
+    def WriteDocTfIdf(docNum, cDict):
+        tmpArr = numpy.array(Retrieval.RetrieveUniqueWords(docNum))
+        tmpArr2 = numpy.array(Retrieval.RetrieveDocTFs(docNum))
         l = len(tmpArr)
         tmpDict = {}
         for i in range(l):
-            idf = Tf_Idf.TermIdf(tmpArr[i])
+            idf = Tf_Idf.TermIdf(tmpArr[i], cDict)
             tf = tmpArr2[i]
             tmpDict[tmpArr[i]] = (tf , idf , tf*idf)
         
@@ -62,12 +55,18 @@ class Tf_Idf:
     def WriteDocsStats():
         if os.path.exists("WordsTF_IDF/"):
             return -1
+        
+        
         os.mkdir("WordsTF_IDF/")
-
-        # CopyFiles(TfFormat, 'CopyFiles/' )
-
+        tmpList = []
+        d=0
+        while d<50001:
+            tmpList+= Retrieval.RetrieveUniqueWords(d)
+            d+=1
+        cDict = Counter(tmpList)
         for i in range(50001):
-            Tf_Idf.WriteDocTfIdf(i)
+            Tf_Idf.WriteDocTfIdf(i, cDict)
         return 1
+
 
 

@@ -5,24 +5,13 @@ import numpy as np
 tf_lst = []
 
 
-for i in range(20064):
+for i in range(50001):
     with open(f'WordsTF\doc_{i}.json', 'r') as json_file:
             
         tf_txt = json.load(json_file)
         tf_sorted_txt = sorted(tf_txt.items(), key=lambda x:x[1], reverse=True)
         tf_lst.append(tf_sorted_txt[:10])
-
-# there is a problem in doc_20064.json
-
-
-for i in range(20065, 50001):
-    with open(f'WordsTF\doc_{i}.json', 'r') as json_file:
-            
-        tf_txt = json.load(json_file)
-        tf_sorted_txt = sorted(tf_txt.items(), key=lambda x:x[1], reverse=True)
-        tf_lst.append(tf_sorted_txt[:10])
-        
 
 
 my_array = np.array(tf_lst)
-
+print(my_array[20064])

@@ -5,7 +5,7 @@ import numpy as np
 tf_idf_lst = []
 
 
-for i in range(50000):
+for i in range(50001):
     with open(f'WordsTF_IDF\doc_{i}.json', 'r') as json_file:
             
         tf_idf_txt = json.load(json_file)
