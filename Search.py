@@ -1,31 +1,42 @@
-from Sort import Sort
-
-class SearchInDocs:
-
-    def ListOfMostRelevantDocs(query, docNums):
-        result = docNums.copy()
-        tmp = Sort.SortDocs(result, 0, len(result)-1, docNums, query)
-        tmp.reverse()
-        return tmp
+from CosineSimilarity import SimilarityRate
+from Query import QueryVector
+from DocAndLine import DocumentVector
+from DocAndLine import LineVector
+from Text import Text
 
 
-    def SearchDocs(query, docNums):
-        tmpList = SearchInDocs.ListOfMostRelevantDocs(query, docNums)
-        return tmpList[0]
-    
+def MostRelevantDocs(query, docNums):
+    tmp = {}
+    arr1 = QueryVector(query)
+    for i in docNums:
+        arr2 = DocumentVector(i, query)
+        tmp[i] = SimilarityRate(arr1, arr2)
+
+    tmp = sorted(tmp.items(), key=lambda x:x[1], reverse=True)
+    result = []
+    for i in tmp:
+        result.append(i[0])
+    return result
 
 
 
 
-class SearchInLines:
+def LinesSimilarity(query, docNum):
+    document = Text.ReadDoc(docNum)
+    tmpList = document.split("\n")
+    similarities = []
+    for i in range(len(tmpList)):
+        v1 = LineVector(tmpList[i] , query)
+        v2 = QueryVector(query)
+        similarities.append((i , SimilarityRate(v1, v2)))
+    return similarities
 
-    def ListOfMostRelevantLines(query, lineNums):
-        result = lineNums.copy()
-        tmp = Sort.SortLines(result, 0 , len(result)-1, lineNums, query)
-        tmp.reverse()
-        return tmp
-    
 
-    def SearchLines(query, lineNums):
-        tmpList = SearchInLines.ListOfMostRelevantLines(query, lineNums)
-        return tmpList[0]
+
+def MostRelevantLines(query, docNum):
+    tmp = LinesSimilarity(query, docNum)
+    tmp.sort(key=lambda x:x[1], reverse=True)
+    result = []
+    for i in tmp:
+        result.append(i[0])
+    return result

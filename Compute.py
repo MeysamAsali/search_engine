@@ -35,6 +35,9 @@ class Tf_Idf:
         c+= cDict[term]
         return math.log(50001 / c)
 
+
+
+
     def WriteDocTfIdf(docNum, cDict):
         tmpArr = numpy.array(Retrieval.RetrieveUniqueWords(docNum))
         tmpArr2 = numpy.array(Retrieval.RetrieveDocTFs(docNum))
@@ -64,6 +67,9 @@ class Tf_Idf:
             tmpList+= Retrieval.RetrieveUniqueWords(d)
             d+=1
         cDict = Counter(tmpList)
+        f=open("UniqueWords.json", mode="w", encoding="utf8")
+        json.dump(cDict, f)
+        f.close()
         for i in range(50001):
             Tf_Idf.WriteDocTfIdf(i, cDict)
         return 1

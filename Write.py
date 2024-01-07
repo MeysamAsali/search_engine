@@ -15,7 +15,3 @@ def WriteAllDocsTFs():
         json.dump(tmp, f)
         f.close()
     return 1
-
-
-
-
