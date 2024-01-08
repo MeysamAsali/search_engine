@@ -37,8 +37,3 @@ def PlotClusters(docNums):
 def RandomPlot(countOfRandNumbers=1000):
     PlotClusters(RandomNumbers(countOfRandNumbers))
     return 1
-
-
-
-
-RandomPlot()
