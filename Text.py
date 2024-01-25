@@ -1,4 +1,5 @@
 import numpy
+import nltk
 
 dataForm = "data/document_{}.txt"
 
@@ -8,7 +9,15 @@ class Text:
 
     def Tokenizer(txt):
         txt = txt.lower()
-        return numpy.array(txt.split())
+        return nltk.tokenize.word_tokenize(txt)
+    
+
+    def lemmatizer(txt):
+        txt_lst = Text.Tokenizer(txt)
+        for i in txt_lst:
+            i = nltk.WordNetLemmatizer.lemmatize(i)
+        return txt_lst
+
 
     def ReadDoc(docNum):
         f = open(dataForm.format(docNum), mode="r", encoding="utf8")
@@ -17,7 +26,14 @@ class Text:
     
 
     def SortedDocWords(docNum):
-        tmp = Text.Tokenizer(Text.ReadDoc(docNum))
+        tmp = Text.lemmatizer(Text.ReadDoc(docNum))
+
+        #delete stop words
+        stop_words = set(nltk.corpus.stopwords.words('english'))
+        for i in tmp:
+            if i in stop_words:
+                tmp.remove(i)
+
         tmp.sort()
         return tmp
     
