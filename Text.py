@@ -1,8 +1,8 @@
 import numpy
 import nltk
 
+nltk.download('punkt')
 dataForm = "data/document_{}.txt"
-
 
 
 class Text:
@@ -14,8 +14,8 @@ class Text:
 
     def lemmatizer(txt):
         txt_lst = Text.Tokenizer(txt)
-        for i in txt_lst:
-            i = nltk.WordNetLemmatizer.lemmatize(i)
+        for i in range(len(txt_lst)):
+            txt_lst[i] = nltk.WordNetLemmatizer.lemmatize(txt_lst[i])
         return txt_lst
 
 
