@@ -2,6 +2,9 @@ import numpy
 import nltk
 
 nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('stopwords')
+
 dataForm = "data/document_{}.txt"
 
 
@@ -14,8 +17,9 @@ class Text:
 
     def lemmatizer(txt):
         txt_lst = Text.Tokenizer(txt)
+        wnl = nltk.WordNetLemmatizer()
         for i in range(len(txt_lst)):
-            txt_lst[i] = nltk.WordNetLemmatizer.lemmatize(txt_lst[i])
+            txt_lst[i] = wnl.lemmatize(txt_lst[i])
         return txt_lst
 
 
@@ -26,7 +30,8 @@ class Text:
     
 
     def SortedDocWords(docNum):
-        tmp = Text.lemmatizer(Text.ReadDoc(docNum))
+        doc = Text.ReadDoc(docNum)
+        tmp = Text.lemmatizer(doc)
 
         #delete stop words
         stop_words = set(nltk.corpus.stopwords.words('english'))

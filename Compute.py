@@ -63,14 +63,14 @@ class Tf_Idf:
         os.mkdir("WordsTF_IDF/")
         tmpList = []
         d=0
-        while d<50001:
+        while d<1000:
             tmpList+= Retrieval.RetrieveUniqueWords(d)
             d+=1
         cDict = Counter(tmpList)
         f=open("UniqueWords.json", mode="w", encoding="utf8")
         json.dump(cDict, f)
         f.close()
-        for i in range(50001):
+        for i in range(1000):
             Tf_Idf.WriteDocTfIdf(i, cDict)
         return 1
 
